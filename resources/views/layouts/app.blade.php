@@ -37,6 +37,7 @@
 
 
                         <li class="nav-item"><a class="nav-link" href="/threads">All Threads</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/threads/create">Add new thread</a></li>
 
                         <li class="dropdown">
                             <a class="nav-link" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
