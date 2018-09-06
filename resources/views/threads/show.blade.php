@@ -5,30 +5,26 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+                <div class="card card-default mb-3">
+                    <div class="card-header">
                         <a href="#">{{ $thread->creator->name }}</a> posted:
                         {{ $thread->title }}
                     </div>
 
-                    <div class="panel-body">
+                    <div class="card-body">
                         {{ $thread->body }}
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                @foreach ($thread->replies as $reply)
+
+                @foreach ($replies as $reply)
                     @include ('threads.reply')
                 @endforeach
-            </div>
-        </div>
 
-        @if (auth()->check())
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+               {{ $replies->links() }}
+
+                @if (auth()->check())
+
                     <form method="POST" action="{{ $thread->path() . '/replies' }}">
                         {{ csrf_field() }}
 
@@ -38,10 +34,21 @@
 
                         <button type="submit" class="btn btn-default">Post</button>
                     </form>
+
+                @else
+                    <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
+                @endif
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p>This thread was published at {{ $thread->created_at->diffForHumans() }} by
+                            <a href="/threads?by={{ $thread->creator->name }} ">{{ $thread->creator->name }} </a>
+                            and Currently has {{ $thread->replies_count }} {{ str_plural('Comment',$thread->replies_count) }}
+                        </p>
+                    </div>
                 </div>
             </div>
-        @else
-            <p class="text-center">Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
-        @endif
+        </div>
     </div>
 @endsection
