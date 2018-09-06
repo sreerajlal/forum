@@ -45,6 +45,12 @@ class Thread extends Model
     {
         return $this->hasMany(Reply::class);
     }
+    
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+    
     /**
      * Add a reply to the thread.
      *
