@@ -28,4 +28,20 @@ class FavoriteTest extends TestCase
         $this->assertCount(1, $reply->favorites);
 
     }
+    
+    /** @test */
+    public function a_user_canot_favorites_more_than_ones()
+    {
+        $this->signIn();
+        $reply = create('App\Reply');
+        try{
+            $this->post('replies/' . $reply->id . '/favorites');
+            $this->post('replies/' . $reply->id . '/favorites');
+        }catch (\Exception $e){
+            $this->fail('Not more than one like');
+        }
+
+
+        $this->assertCount(1, $reply->favorites);
+    }
 }
