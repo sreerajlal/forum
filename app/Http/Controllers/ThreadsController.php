@@ -30,8 +30,7 @@ class ThreadsController extends Controller
             $threads = Thread::latest();
         }
 
-        $threads = $threads->filter($threadFilters);
-        $threads = $threads->get();
+        $threads = $threads->filter($threadFilters)->get();
 
         return view('threads.index', compact('threads'));
     }

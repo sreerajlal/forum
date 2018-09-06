@@ -2,17 +2,25 @@
 
 namespace App\Filters;
 
-use App\Thread;
+use App\User;
+use Illuminate\Http\Request;
+
 
 class ThreadFilters{
 
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     public function apply($builder)
     {
-        if ($userName = request('by')) {
-            $user = \App\User::where('name', $userName)->firstOrFail();
-            $threads = Thread::where('user_id', $user->id);
-            return $threads;
-        }
+        if (!$userName = $this->request->by) return $builder;
 
+            $user = User::where('name', $userName)->firstOrFail();
+            return  $builder->where('user_id', $user->id);
+            
     }
 }
