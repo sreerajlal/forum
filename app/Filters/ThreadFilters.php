@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class ThreadFilters{
 
     protected $request;
+    protected $builder;
 
     public function __construct(Request $request)
     {
@@ -17,10 +18,21 @@ class ThreadFilters{
 
     public function apply($builder)
     {
-        if (!$userName = $this->request->by) return $builder;
+        $this->builder = $builder;
 
-            $user = User::where('name', $userName)->firstOrFail();
-            return  $builder->where('user_id', $user->id);
-            
+        if ($this->request->has('by')){
+            $this->by($this->request->by);
+        }
+         return $this->builder;
+    }
+
+    /**
+     * @param $userName
+     * @return mixed
+     */
+    protected function by($userName)
+    {
+        $user = User::where('name', $userName)->firstOrFail();
+        return $this->builder->where('user_id', $user->id);
     }
 }
