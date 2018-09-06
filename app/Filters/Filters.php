@@ -21,11 +21,19 @@ abstract class Filters{
 
         foreach ($this->filters as $filter){
 
-            if (method_exists($this, $filter) && $this->request->has($filter)){
-                $this->$filter($this->request->$filter);
-            }
+            if (! $this->hasFilter($filter)) return;
+            $this->$filter($this->request->$filter);
         }
 
         return $this->builder;
+    }
+
+    /**
+     * @param $filter
+     * @return bool
+     */
+    protected function hasFilter($filter): bool
+    {
+        return method_exists($this, $filter) && $this->request->has($filter);
     }
 }
