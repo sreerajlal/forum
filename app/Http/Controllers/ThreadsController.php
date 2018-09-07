@@ -24,7 +24,7 @@ class ThreadsController extends Controller
     public function index(Channel $channel,ThreadFilters $threadFilters)
     {
 
-        $threads = Thread::with('channel')->latest()->filter($threadFilters);
+        $threads = Thread::latest()->filter($threadFilters);
 
         if ($channel->exists) {
             $threads = $channel->threads();
