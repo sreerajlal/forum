@@ -9,7 +9,9 @@
             <div>
                 <form action="/replies/{{ $reply->id }}/favorites" method="post">
                     @csrf
-                    <button class="btn btn-primary {{ $reply->isFavorited() ? 'disabled':''  }}" type="submit"> {{ $reply->favorites()->count() }} Like</button>
+                    <button class="btn btn-primary {{ $reply->isFavorited() ? 'disabled':''  }}" type="submit">
+                        {{ $reply->favorites_count}} Like
+                    </button>
                 </form>
             </div>
         </div>
