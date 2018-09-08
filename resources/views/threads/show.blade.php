@@ -7,8 +7,23 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="card card-default mb-3">
                     <div class="card-header">
-                        <a href="{{ route('profile', $thread->creator->name) }}">{{ $thread->creator->name }}</a> posted:
-                        {{ $thread->title }}
+                        <div class="level">
+                            <div class="flex">
+                                <a href="{{ route('profile', $thread->creator->name) }}">{{ $thread->creator->name }}</a> posted:
+                                {{ $thread->title }}
+                            </div>
+
+                            @if (Auth::check())
+                                <form action="{{ $thread->path() }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button class="btn btn-link" type="submit">Delete</button>
+                                </form>
+                            @endif
+
+                        </div>
+
                     </div>
 
                     <div class="card-body">
