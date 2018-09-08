@@ -56,7 +56,7 @@ class CreateThreadsTest extends TestCase
     public function a_thread_can_be_deleted()
     {
         $this->signIn();
-        $thread = create('App\Thread');
+        $thread = create('App\Thread',['user_id' => auth()->id()]);
         $reply = create('App\Reply', ['thread_id' => $thread->id]);
 
         $response = $this->json('DELETE', $thread->path());
@@ -68,20 +68,16 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function guest_canot_delete_thread()
+    public function thread_may_only_be_deleted_by_who_have_permission()
     {
         $this->withExceptionHandling();
         $thread = create('App\Thread');
-        $response = $this->delete($thread->path());
+        $this->delete($thread->path())
+            ->assertRedirect('/login');
 
-        $response->assertRedirect('/login');
+        $this->signIn();
+        $this->delete($thread->path())
+            ->assertStatus(403);
     }
-
-    /** test */
-    public function thread_may_only_be_deleted_by_who_have_permission()
-    {
-
-    }
-    
 }
 
