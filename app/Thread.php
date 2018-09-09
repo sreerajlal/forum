@@ -3,6 +3,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 class Thread extends Model
 {
+    use RecordsActivity;
+
     /**
      * Don't auto-apply mass assignment protection.
      *
