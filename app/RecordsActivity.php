@@ -14,10 +14,16 @@ trait RecordsActivity
     protected static function bootRecordsActivity(){
         if (auth()->guest()) return;
 
-        static::created(function ($thread){
-            $thread->recordActivity('created');
-        });
+        foreach (static::eventsForActivity() as $event){
+            static::$event(function ($modelName) use ($event){
+                $modelName->recordActivity($event);
+            });
+        }
+    }
 
+    public static function eventsForActivity()
+    {
+        return ['created'];
     }
 
     public function recordActivity($event)
