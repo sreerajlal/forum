@@ -10,9 +10,10 @@ class ProfileController extends Controller
    
     public function show(User $user)
     {
+        $aticity = $user->activity()->with('subject')->get();
         return view('profiles.show', [
             'profileUser' =>$user,
-            'profileThreads' => $user->threads()->paginate(10)
+            'activities' => $aticity
         ]);
     }
 }
