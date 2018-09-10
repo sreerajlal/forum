@@ -4,8 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                @foreach ($activities as $activity)
-                    @include("profiles.activity.{$activity->type}")
+                @foreach ($activities as $date => $activity)
+                    <h3 class="card-header">{{ $date }}</h3>
+                    @foreach ($activity as  $record)
+                        @include("profiles.activity.{$record->type}", ['activity' => $record ])
+                     @endforeach
                 @endforeach
             </div>
         </div>

@@ -10,10 +10,20 @@ class ProfileController extends Controller
    
     public function show(User $user)
     {
-        $aticity = $user->activity()->with('subject')->get();
         return view('profiles.show', [
             'profileUser' =>$user,
-            'activities' => $aticity
+            'activities' => $this->getActivity($user)
         ]);
+    }
+
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    protected function getActivity(User $user)
+    {
+        return $user->activity()->with('subject')->take(50)->get()->groupBy(function ($aticity) {
+            return $aticity->created_at->format('Y-m-d');
+        });
     }
 }
